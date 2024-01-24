@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         // Define environment variables, if needed
-        PYTHON_VERSION = '3.12.1'
+        PYTHON_VERSION = ''
         DJANGO_SETTINGS_MODULE = 'netclone.netflix.netflixprj.netflixprj.settings'
         DOCKER_REGISTRY = 'your-docker-registry'
         DOCKER_IMAGE_NAME = 'myflix-django-app'
@@ -17,11 +17,11 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+     stage('Install Dependencies') {
             steps {
                 script {
-                    sh "python${PYTHON_VERSION} -m venv venv"
-                    sh "source venv/bin/activate && pip install -r requirements.txt"
+                    sh "cd /var/lib/jenkins/workspace/myflix-jenkins && python3 -m venv myenv"
+                    sh "cd /var/lib/jenkins/workspace/myflix-jenkins && source myenv/bin/activate && pip install -r requirements.txt"
                 }
             }
         }
@@ -29,7 +29,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    sh "source venv/bin/activate && python${PYTHON_VERSION} manage.py test"
+                    sh "cd /var/lib/jenkins/workspace/myflix-jenkins && python3 manage.py test"
                 }
             }
         }
@@ -37,7 +37,7 @@ pipeline {
         stage('Build and Collect Static Files') {
             steps {
                 script {
-                    sh "source venv/bin/activate && python${PYTHON_VERSION} manage.py collectstatic --noinput"
+                    sh "cd /var/lib/jenkins/workspace/myflix-jenkins && source myenv/bin/activate && python3 manage.py collectstatic --noinput"
                 }
             }
         }
@@ -45,7 +45,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
+                    sh "cd /var/lib/jenkins/workspace/myflix-jenkins && docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
                 }
             }
         }
@@ -54,17 +54,17 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
+                    sh "cd /var/lib/jenkins/workspace/myflix-jenkins && docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
                     
                     // Run the Docker container in detached mode (-d)
-                    sh "docker run -d -p 8000:8000 --name myflix-container ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+                    sh "cd /var/lib/jenkins/workspace/myflix-jenkins && docker run -d -p 8000:8000 --name myflix-container ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
                 }
             }
 
             post {
                 always {
                     script {
-                        sh "deactivate || true"
+                        sh "cd /var/lib/jenkins/workspace/myflix-jenkins && deactivate || true"
                     }
                 }
             }
