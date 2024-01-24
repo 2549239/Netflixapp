@@ -20,7 +20,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 bat '''
-                    call myenv\Scripts\activate
+                    call myenv/Scripts/activate
                     pip install -r requirements.txt
                 '''
             }
