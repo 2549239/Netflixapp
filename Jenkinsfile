@@ -22,6 +22,7 @@ pipeline {
                 script {
                     sh "cd /var/lib/jenkins/workspace/myflix-jenkins && python3 -m venv myenv"
                     sh "cd /var/lib/jenkins/workspace/myflix-jenkins && ls -l"
+                    sh "cd /var/lib/jenkins/workspace/myflix-jenkins && source myenv/Scripts/activate && pip install -r requirements.txt"
                 }
             }
         }
