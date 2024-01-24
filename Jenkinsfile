@@ -17,18 +17,26 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
+        environment {
+        VENV_DIR = 'myenv'
+        ACTIVATE_SCRIPT = isUnix() ? "${VENV_DIR}/bin/activate" : "${VENV_DIR}\\Scripts\\activate"
+    }
+
+    stages {
+        stage('Activate Virtual Environment') {
             steps {
                 script {
-                   sh "source venv/bin/activate && python${PYTHON_VERSION} manage.py test"
+                    sh "python3 -m venv ${VENV_DIR}"
+                    sh ". ${ACTIVATE_SCRIPT}"
                 }
             }
         }
+    }
 
         stage('Run Tests') {
             steps {
                 script {
-                    sh "source venv/bin/activate && python3 manage.py test"
+                    sh "python3 manage.py test"
                 }
             }
         }
