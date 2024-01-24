@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Define environment variables, if needed
         PYTHON_VERSION = '3.12.1'
-        DJANGO_SETTINGS_MODULE = 'netclone\netflix\netflixprj\netflixprj.settings'
+        DJANGO_SETTINGS_MODULE = 'netclone.netflix.netflixprj.netflixprj.settings'
         DOCKER_REGISTRY = 'your-docker-registry'
         DOCKER_IMAGE_NAME = 'myflix-django-app'
         DOCKER_IMAGE_TAG = 'latest'
@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout git
+                checkout scm
             }
         }
 
@@ -54,21 +54,20 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh "docker build -t myflix-app:latest ."
+                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG} ."
                     
                     // Run the Docker container in detached mode (-d)
-                    sh "docker run -d -p 8000:8000 --name myflix-container myflix-django-app:latest"
+                    sh "docker run -d -p 8000:8000 --name myflix-container ${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
+                }
+            }
+
+            post {
+                always {
+                    script {
+                        sh "deactivate || true"
+                    }
                 }
             }
         }
-    
-
-    post {
-        always {
-            script {
-                sh "deactivate || true"
-            }
-        }
     }
-}
 }
