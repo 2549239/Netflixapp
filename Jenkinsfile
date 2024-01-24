@@ -22,11 +22,7 @@ pipeline {
                 script {
                     // sh "cd /var/lib/jenkins/workspace/myflix-jenkins && python3 -m venv myenv"
                     sh "cd /var/lib/jenkins/workspace/myflix-jenkins && ls -l"
-                    // Make the .sh file executable with sudo
-                    sh 'sudo chmod +x setup-venv.sh'
-
-                     // Execute the .sh file with sudo
-                     sh 'sudo ./setup-venv.sh'
+                    
                 }
             }
         }
