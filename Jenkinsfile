@@ -20,7 +20,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    sh "python${PYTHON_VERSION} -m venv venv"
+                    sh "python3 -m venv venv"
                     sh "source venv/bin/activate && pip install -r requirements.txt"
                 }
             }
@@ -29,7 +29,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    sh "source venv/bin/activate && python${PYTHON_VERSION} manage.py test"
+                    sh "source venv/bin/activate && python3 manage.py test"
                 }
             }
         }
@@ -37,7 +37,7 @@ pipeline {
         stage('Build and Collect Static Files') {
             steps {
                 script {
-                    sh "source venv/bin/activate && python${PYTHON_VERSION} manage.py collectstatic --noinput"
+                    sh "source venv/bin/activate && python3 manage.py collectstatic --noinput"
                 }
             }
         }
