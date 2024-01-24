@@ -19,16 +19,14 @@ pipeline {
             }
         }
 
-    stages {
-        stage('Activate Virtual Environment') {
+     stage('Install Dependencies') {
             steps {
                 script {
-                    sh "python3 -m venv ${VENV_DIR}"
-                    sh ". ${ACTIVATE_SCRIPT}"
+                    sh "python${PYTHON_VERSION} -m venv myenv"
+                    sh "source venv/bin/activate && pip install -r requirements.txt"
                 }
             }
         }
-    }
 
         stage('Run Tests') {
             steps {
