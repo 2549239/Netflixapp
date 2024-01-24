@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         // Define environment variables, if needed
-        PYTHON_VERSION = '3.10.12'
+        PYTHON_VERSION = ''
         DJANGO_SETTINGS_MODULE = 'netclone.netflix.netflixprj.netflixprj.settings'
         DOCKER_REGISTRY = 'your-docker-registry'
         DOCKER_IMAGE_NAME = 'myflix-django-app'
