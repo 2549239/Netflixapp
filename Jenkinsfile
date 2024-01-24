@@ -17,25 +17,14 @@ pipeline {
             }
         }
 
-     stage('Move Project Folder') {
+     stage('Install Dependencies') {
             steps {
                 script {
-                    sh "mv /var/lib/jenkins/workspace/myflix-jenkins /home/ubuntu/myflix-jenkins"
-                    sh "cd /home/ubuntu/myflix-jenkins"
+                    sh "cd /var/lib/jenkins/workspace/myflix-jenkins && python3 -m venv myenv"
+                    sh "cd /var/lib/jenkins/workspace/myflix-jenkins && ls -l"
                 }
             }
         }
-
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    sh "python3 -m venv myenv"
-                    sh "ls -l"
-                    sh "source myenv/bin/activate && pip install -r requirements.txt"
-                }
-            }
-        }
-
 
         // stage('Run Tests') {
         //     steps {
