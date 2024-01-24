@@ -8,6 +8,8 @@ pipeline {
         DOCKER_REGISTRY = 'your-docker-registry'
         DOCKER_IMAGE_NAME = 'myflix-django-app'
         DOCKER_IMAGE_TAG = 'latest'
+        VENV_DIR = 'myenv'
+        ACTIVATE_SCRIPT = isUnix() ? "${VENV_DIR}/bin/activate" : "${VENV_DIR}\\Scripts\\activate"
     }
 
     stages {
@@ -16,11 +18,6 @@ pipeline {
                 checkout scm
             }
         }
-
-        environment {
-        VENV_DIR = 'myenv'
-        ACTIVATE_SCRIPT = isUnix() ? "${VENV_DIR}/bin/activate" : "${VENV_DIR}\\Scripts\\activate"
-    }
 
     stages {
         stage('Activate Virtual Environment') {
