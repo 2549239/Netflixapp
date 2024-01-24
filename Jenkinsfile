@@ -20,10 +20,9 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    sh '''
-                        myenv/Scripts/activate
-                        pip install -r requirements.txt
-                    '''
+                   def venvActivateScript = isUnix() ? 'myenv/bin/activate' : 'myenv/Scripts/activate'
+                    sh "source ${venvActivateScript}"
+                    sh "pip install -r requirements.txt"
                 }
             }
         }
